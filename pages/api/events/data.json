@@ -1,0 +1,40 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "name": "Name 1",
+      "slug": "slug-1",
+      "address": "Address 1",
+      "performers": "DJ 1",
+      "date": "Date 1",
+      "time": "10:00 PM EST",
+      "description": "description 1",
+      "image": "/images/sample/event1.jpg",
+      "venue": "venue 1"
+    },
+    {
+      "id": 2,
+      "name": "Name 2",
+      "slug": "slug-2",
+      "address": "Address 2",
+      "performers": "DJ 2",
+      "date": "Date 2",
+      "time": "11:00 PM EST",
+      "description": "description 2",
+      "image": "/images/sample/event2.jpg",
+      "venue": "venue 2"
+    },
+    {
+      "id": 3,
+      "name": "Name 3",
+      "slug": "slug-3",
+      "address": "Address 3",
+      "performers": "DJ 3",
+      "date": "Date 3",
+      "time": "11:00 PM EST",
+      "description": "description 3",
+      "image": "/images/sample/event3.jpg",
+      "venue": "venue 3"
+    }
+  ]
+}

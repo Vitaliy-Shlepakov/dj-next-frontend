@@ -7,26 +7,19 @@ import EventItem from "@components/EventItem";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function HomePage({events}) {
+export default function EventsPage ({events}) {
+
   const renderEvents = useCallback(() => {
     return events.map(evt => <EventItem key={evt.id} evt={evt}/>)
   }, [])
 
   return (
     <Layout>
-      <h1>HOME</h1>
+      <h1>Events Pages</h1>
       {
         events.length
           ? renderEvents()
           : <h3>Empty list</h3>
-      }
-
-      {
-        events.length > 0 && (
-          <Link
-            className="btn-secondary"
-            href='/events'>Show All events</Link>
-        )
       }
     </Layout>
   )
