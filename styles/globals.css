@@ -68,13 +68,13 @@
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
   }
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
 
 html,
 body {
@@ -101,4 +101,39 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+* {
+  font-family: 'Inter';
+}
+
+
+h2 {
+  margin: 20px 0 20px 0;
+}
+
+.btn{
+  display: inline-flex;
+  align-content: center;
+  padding: 10px 25px;
+  background-color: tomato;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all .3s;
+  font-size: 16px;
+}
+.btn span {
+  padding: 0 5px;
+}
+
+.btn:hover{
+  background-color: darkred;
+}
+
+a.back {
+  color: cornflowerblue;
+  text-transform: capitalize;
+
 }

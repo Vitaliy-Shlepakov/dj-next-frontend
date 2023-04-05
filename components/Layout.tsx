@@ -7,7 +7,7 @@ import ShowCase from "@components/ShowCase";
 import {useRouter} from "next/router";
 
 type LayoutProps = {
-  title: string;
+  title?: string;
   keywords?: string;
   description?: string;
   children: ReactNode

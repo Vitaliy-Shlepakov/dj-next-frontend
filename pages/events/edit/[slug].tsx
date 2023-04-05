@@ -8,18 +8,27 @@ import 'react-toastify/dist/ReactToastify.css';
 import {API_URL} from "@/config";
 import { EventType } from '@/types';
 import slugify from 'slugify';
+import moment from 'moment';
+import Image from "next/image";
+import {FaImage} from 'react-icons/fa'
+import Modal from "@components/Modal";
+import ImageUpload from "@components/ImageUpload";
 
-const AddPage = () => {
+const EditPage:React.FC<{evt: EventType}> = ({evt}) => {
   const router = useRouter();
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [imagePreview, setImagePreview] = useState(
+    evt.image ? evt.image.thumbnail.url : null
+  );
   const [values, setValues] = useState<Partial<EventType>>({
-    name: '',
-    performers: '',
-    venue: '',
-    address: '',
-    date: '',
-    time: '',
-    description: '',
-    slug: '',
+    name: evt.name,
+    performers: evt.performers,
+    venue: evt.venue,
+    address: evt.address,
+    date: evt.date,
+    time: evt.time,
+    description: evt.description,
+    slug: evt.slug,
   });
 
   useEffect(() => {
@@ -42,8 +51,8 @@ const AddPage = () => {
       toast.error("Please fill in all fields!")
       return
     }
-    const res: Response = await fetch(`${API_URL}/api/events`, {
-      method: 'POST',
+    const res: Response = await fetch(`${API_URL}/api/events/${evt.id}`, {
+      method: 'PUT',
       headers: {
         "Content-Type": "application/json",
       },
@@ -63,10 +72,18 @@ const AddPage = () => {
     setValues({...values, [fieldName]: value})
   }, [values])
 
+  const imageUploaded = async () => {
+    const res = await fetch(`${API_URL}/api/events/${evt.slug}?populate=image`);
+    const event = await res.json();
+    setImagePreview(event.data.attributes.image?.data?.attributes.formats.thumbnail.url);
+    setShowModal(false)
+
+  };
+
   return (
     <Layout title="Add new event">
       <Link href='/events' className="back">Go Back</Link>
-      <h2>AddPage</h2>
+      <h2>Edit event</h2>
       <ToastContainer />
 
       <form
@@ -120,7 +137,7 @@ const AddPage = () => {
               type="date"
               id="date"
               name="date"
-              value={values.date}
+              value={moment(values.date).format('yyyy-MM-DD')}
               onChange={handleInputChange}
             />
           </div>
@@ -146,10 +163,53 @@ const AddPage = () => {
           ></textarea>
         </div>
 
-        <input type="submit" value="Add Event" className="btn"/>
+        <input type="submit" value="Update Event" className="btn"/>
       </form>
+
+      <h2>Event Image</h2>
+      {
+        imagePreview ? (
+          <Image src={imagePreview} height={100} width={170} alt={evt.name}/>
+        ) :
+          <div>
+            <p>
+              No images uploaded!
+            </p>
+          </div>
+      }
+      <div>
+        <button className="btn" onClick={() => setShowModal(true)}>
+          <FaImage/>
+          <span>Set Image</span>
+        </button>
+      </div>
+
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+      >
+        <ImageUpload
+          evtId={evt.id}
+          imageUploaded={imageUploaded}
+        >
+          TEST
+        </ImageUpload>
+      </Modal>
     </Layout>
   );
 };
 
-export default AddPage;
+export default EditPage;
+
+export async function getServerSideProps({params: { slug }}) {
+  const res = await fetch(`${API_URL}/api/events/${slug}?populate=image`)
+  const evt = await res.json();
+    const normalizeEvent = {
+      ...evt.data.attributes,
+      id: evt.data.id,
+      image: evt.data.attributes.image?.data?.attributes.formats || null,
+    }
+    return {
+      props: { evt: normalizeEvent }
+  }
+}
