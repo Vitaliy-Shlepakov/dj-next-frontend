@@ -77,7 +77,6 @@ const EditPage:React.FC<{evt: EventType}> = ({evt}) => {
     const event = await res.json();
     setImagePreview(event.data.attributes.image?.data?.attributes.formats.thumbnail.url);
     setShowModal(false)
-
   };
 
   return (
